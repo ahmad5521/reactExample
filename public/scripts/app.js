@@ -1,8 +1,31 @@
 'use strict';
 
+var myarrowFunction = function myarrowFunction(x) {
+    return x.split(' ')[0];
+};
+
+console.log(myarrowFunction('ahmad asiri'));
+
+var multiplier = {
+    numbers: [1, 2, 3, 4, 5, 6],
+    multplyBy: function multplyBy() {
+        return this.numbers.map(function (r) {
+            return r * r;
+        });
+    },
+    multplyByNumber: function multplyByNumber(x) {
+        return this.numbers.map(function (r) {
+            return r * x;
+        });
+    }
+};
+
+console.log(multiplier.multplyBy());
+console.log(multiplier.multplyByNumber(2));
+
 var app = {
     title: 'React Fun',
-    subtitle: 'ertret',
+    subtitle: 'i like it',
     options: ['one', 'two']
 };
 var template = React.createElement(

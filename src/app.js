@@ -1,6 +1,25 @@
+
+const myarrowFunction = (x) =>  x.split(' ')[0];
+
+console.log(myarrowFunction('ahmad asiri'));
+
+const multiplier ={
+    numbers : [1,2,3,4,5,6],
+    multplyBy() {
+        return this.numbers.map((r) => r * r)
+    },
+    multplyByNumber(x) {
+        return this.numbers.map((r) => r * x)
+    }
+};
+
+console.log(multiplier.multplyBy());
+console.log(multiplier.multplyByNumber(2));
+
+
 const app = {
     title: 'React Fun',
-    subtitle: 'ertret',
+    subtitle: 'i like it',
     options:['one', 'two']
 };
 const template = (
@@ -16,7 +35,7 @@ const template = (
     </div>
     
     );
-
+ 
 const user = {
     name: 'Ahmad Asiri',
     age: 30,
@@ -45,3 +64,4 @@ const template2 = (
     const appRoot = document.getElementById('app');
 
 ReactDOM.render(template, appRoot);                             
+
