@@ -13,7 +13,7 @@ class Person {
 
 class Student extends Person {
   constructor(name, age, major) {
-    // super(name, age);
+    super(name, age);
     this.major = major;
   }
   hasMajor() {
@@ -23,7 +23,7 @@ class Student extends Person {
     let description = super.getDescription();
 
     if (this.hasMajor()) {
-      description += ` Their sdfsfsfssfs is ${this.major}.`;
+      description += ` Their major is ${this.major}.`;
     }
 
     return description;
@@ -46,8 +46,8 @@ class Traveler extends Person {
   }
 }
 
-const me = new Traveler('Andrew Mead', 26, 'fssssssssssssss');
+const me = new Traveler('Andrew Mead', 30, 'تبوك');
 console.log(me.getGreeting());
 
-const other = new Traveler(undefined, undefined, 'dddddddddddddddddddd');
+const other = new Traveler(undefined, undefined, 'Nowhere');
 console.log(other.getGreeting());
