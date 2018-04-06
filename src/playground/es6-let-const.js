@@ -1,11 +1,22 @@
-var namevar = 'ahmad';
-namevar = 'dasfdsf';
-console.log('namevar',namevar)
+var nameVar = 'Andrew';
+var nameVar = 'Mike';
+console.log('nameVar', nameVar);
 
-let namelet = 'ahmad';
-namelet = 'dasfdsf';
-console.log('namelet',namelet)
+let nameLet = 'Jen';
+nameLet = 'Julie';
+console.log('nameLet', nameLet);
 
+const nameConst = 'Frank';
+console.log('nameConst', nameConst);
 
-const nameconst = 'ahmad';
-console.log('nameconst',nameconst)
+// Block scoping
+
+const fullName = 'Jen Mead';
+let firstName;
+
+if (fullName) {
+  firstName = fullName.split(' ')[0];
+  console.log(firstName);
+}
+
+console.log(firstName);

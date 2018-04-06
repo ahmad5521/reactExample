@@ -1,9 +1,8 @@
 {
-  "name": "reactExample",
+  "name": "indecision-app",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/ahmad5521/reactExample.git",
-  "author": "ahmad5521 <a.wv@live.com>",
+  "author": "Andrew Mead",
   "license": "MIT",
   "dependencies": {
     "babel-preset-env": "1.5.2",
