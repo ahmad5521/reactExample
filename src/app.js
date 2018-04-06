@@ -18,11 +18,20 @@ const onFormSubmit = (e) => {
 
 };
 
-const onRemoveAll = (e) => {   
-    console.log(e.target.type) ;
+const onRemoveAll = () => {   
   app.options = [];
   render();
 };
+
+let whatShowldIdoOption = '';
+
+const whatShowldIdo = (e) => {
+  const random = Math.floor(Math.random() * app.options.length);
+  const option = app.options[random];
+  alert(option);
+render();
+};
+let myAttr = 'disabled';
 
 const appRoot = document.getElementById('app');
 
@@ -33,10 +42,14 @@ const render = () => {
       {app.subtitle && <p>{app.subtitle}</p>}
       <p>{app.options.length > 5 ? 'Here are your options' : 'No options'}</p>
       <p>{app.options.length}</p>
-      <button onClick={onRemoveAll}>Remove All</button>
-      <ol onClick={onRemoveAll}>
-        <li>Item one</li>
-        <li>Item two</li>
+      <button disabled={app.options.length ===0} onClick={whatShowldIdo}>what should i do?</button>
+      <button onClick={onRemoveAll}>Remove All</button>      
+      <ol>
+          {
+            app.options.map((val,key) => {
+            return <li key={key}>{val}</li>
+          })
+        }
       </ol>
       <form onSubmit={onFormSubmit}>
         <input type="text" name="option" />
@@ -44,8 +57,26 @@ const render = () => {
       </form>
     </div>
   );
-  ReactDOM.render(template, appRoot);
+
+  const jsx = (
+    <div>
+        <h1>visibility tuggle</h1>
+        <button onClick={vis} >{visibility ? 'hide details' : 'show details'}</button>
+        {visibility && (<p  name="details">this is detailes</p>)}
+    </div>
+  );
+
+
+  ReactDOM.render(<div>{template}  {jsx}</div>, appRoot);
 };
 
+
+let visibility = false;
+const vis = (e) => {  
+
+  visibility = !visibility
+
+  render();
+};
 
 render();

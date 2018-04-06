@@ -19,11 +19,20 @@ var onFormSubmit = function onFormSubmit(e) {
   }
 };
 
-var onRemoveAll = function onRemoveAll(e) {
-  console.log(e.target.type);
+var onRemoveAll = function onRemoveAll() {
   app.options = [];
   render();
 };
+
+var whatShowldIdoOption = '';
+
+var whatShowldIdo = function whatShowldIdo(e) {
+  var random = Math.floor(Math.random() * app.options.length);
+  var option = app.options[random];
+  alert(option);
+  render();
+};
+var myAttr = 'disabled';
 
 var appRoot = document.getElementById('app');
 
@@ -53,22 +62,24 @@ var render = function render() {
     ),
     React.createElement(
       'button',
+      { disabled: app.options.length === 0, onClick: whatShowldIdo },
+      'what should i do?'
+    ),
+    React.createElement(
+      'button',
       { onClick: onRemoveAll },
       'Remove All'
     ),
     React.createElement(
       'ol',
-      { onClick: onRemoveAll },
-      React.createElement(
-        'li',
-        null,
-        'Item one'
-      ),
-      React.createElement(
-        'li',
-        null,
-        'Item two'
-      )
+      null,
+      app.options.map(function (val, key) {
+        return React.createElement(
+          'li',
+          { key: key },
+          val
+        );
+      })
     ),
     React.createElement(
       'form',
@@ -81,7 +92,42 @@ var render = function render() {
       )
     )
   );
-  ReactDOM.render(template, appRoot);
+
+  var jsx = React.createElement(
+    'div',
+    null,
+    React.createElement(
+      'h1',
+      null,
+      'visibility tuggle'
+    ),
+    React.createElement(
+      'button',
+      { onClick: vis },
+      visibility ? 'hide details' : 'show details'
+    ),
+    visibility && React.createElement(
+      'p',
+      { name: 'details' },
+      'this is detailes'
+    )
+  );
+
+  ReactDOM.render(React.createElement(
+    'div',
+    null,
+    template,
+    '  ',
+    jsx
+  ), appRoot);
+};
+
+var visibility = false;
+var vis = function vis(e) {
+
+  visibility = !visibility;
+
+  render();
 };
 
 render();
