@@ -46,7 +46,7 @@ class Traveler extends Person {
   }
 }
 
-const me = new Traveler('Andrew Mead', 30, 'تبوك');
+const me = new Traveler('Andrew Mead', 26, 'Philadelphia');
 console.log(me.getGreeting());
 
 const other = new Traveler(undefined, undefined, 'Nowhere');
