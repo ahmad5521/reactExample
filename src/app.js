@@ -24,7 +24,7 @@ class IndecisionApp extends React.Component {
     if(!x){
       return 'Enter valid option';
     }else if(this.state.options.indexOf(x) > -1){
-      return 'Option Exist';
+      return 'Option Exist'; 
     }
     this.setState((ps) => {
       return{
