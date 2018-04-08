@@ -9,7 +9,7 @@ const OptionModal = (props) =>{
     return (
         <Modal 
             isOpen={!!props.selectedModal}
-            contentLabel="sd"
+            contentLabel="selected Option"
             onRequestClose={props.handleCloseOptionModal}
         >
             <h3>selected Options</h3>
