@@ -1,118 +1,190 @@
+// stateless functional component
+
 class IndecisionApp extends React.Component {
   constructor(props) {
     super(props);
-    this.handleDeleteAllOptions = this.handleDeleteAllOptions.bind(this);
-    this.handlePickupOneOption = this.handlePickupOneOption.bind(this);
+    this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
+    this.handlePick = this.handlePick.bind(this);
     this.handleAddOption = this.handleAddOption.bind(this);
-    this.state={
-      options : []
-    }
+    this.handleDeleteOption = this.handleDeleteOption.bind(this);
+    this.state = {
+      options: props.options
+    };
   }
-  handleDeleteAllOptions(){
-    this.setState(() => {
-      return{
-        options : []
-      };
-    });
+  handleDeleteOptions() {
+    this.setState(() => ({ options: [] }));
   }
-  handlePickupOneOption(){
+  handleDeleteOption(optionToRemove) {
+    this.setState((prevState) => ({
+      options: prevState.options.filter((option) => optionToRemove !== option)
+    }));
+  }
+  handlePick() {
     const randomNum = Math.floor(Math.random() * this.state.options.length);
     const option = this.state.options[randomNum];
     alert(option);
   }
-  handleAddOption(x){
-    if(!x){
-      return 'Enter valid option';
-    }else if(this.state.options.indexOf(x) > -1){
-      return 'Option Exist'; 
+  handleAddOption(option) {
+    if (!option) {
+      return 'Enter valid value to add item';
+    } else if (this.state.options.indexOf(option) > -1) {
+      return 'This option already exists';
     }
-    this.setState((ps) => {
-      return{
-        options : ps.options.concat(x)
-      };
-    });
+
+    this.setState((prevState) => ({
+      options: prevState.options.concat(option)
+    }));
   }
+
+
+  componentDidUpdate(prvProps, prvState){
+    if(this.state.options.length !== prvState.options.length){
+      const Json = JSON.stringify(this.state.options);
+      localStorage.setItem('options', Json);
+      console.log('component Did Update');
+    }
+  }
+  componentWillMount(){
+    try {
+      const Json = JSON.parse(localStorage.getItem('options'));
+      if(Json)
+      {
+        this.setState((prevState) => ({
+          options: Json
+        }));
+        console.log('component will Mount');
+      }    
+    } catch (error) {
+      // nothing
+    }
+  }
+
   render() {
-    const title = 'Indecision';
     const subtitle = 'Put your life in the hands of a computer';
+
     return (
       <div>
-        <Header title={title} subtitle={subtitle} />
-        <Action hasOptions={this.state.options.length > 0} handlePickupOneOption={this.handlePickupOneOption}/>
-        <Options options={this.state.options} handleDeleteAllOptions={this.handleDeleteAllOptions}/>
-        <AddOption handleAddOption={this.handleAddOption} />
+        <Header subtitle={subtitle} />
+        <Action
+          hasOptions={this.state.options.length > 0}
+          handlePick={this.handlePick}
+        />
+        <Options
+          options={this.state.options}
+          handleDeleteOptions={this.handleDeleteOptions}
+          handleDeleteOption={this.handleDeleteOption}
+        />
+        <AddOption
+          handleAddOption={this.handleAddOption}
+        />
       </div>
     );
   }
 }
 
-const Header =  (props) => {
+IndecisionApp.defaultProps = {
+  options: []
+};
+
+const Header = (props) => {
   return (
     <div>
       <h1>{props.title}</h1>
-      <h2>{props.subtitle}</h2>
+      {props.subtitle && <h2>{props.subtitle}</h2>}
     </div>
   );
-}
+};
+
+Header.defaultProps = {
+  title: 'Indecision'
+};
 
 const Action = (props) => {
   return (
     <div>
-      <button disabled={!props.hasOptions} 
-              onClick={props.handlePickupOneOption}>
-              What should I do?
-              </button>
+      <button
+        onClick={props.handlePick}
+        disabled={!props.hasOptions}
+      >
+        What should I do?
+      </button>
     </div>
   );
-}
+};
 
 const Options = (props) => {
   return (
     <div>
-      <button onClick={props.handleDeleteAllOptions}>
-              Remove All
-              </button>
-      {props.options.map((option) => <Option key={option} optionText={option} />)}
+      <button onClick={props.handleDeleteOptions}>Remove All</button>
+      {props.options.length === 0 && <p>Add Option to Start</p> }
+      {
+        props.options.map((option) => (
+          <Option
+            key={option}
+            optionText={option}
+            handleDeleteOption={props.handleDeleteOption}
+          />
+        ))
+      }
     </div>
   );
-}
+};
 
 const Option = (props) => {
   return (
     <div>
       {props.optionText}
+      <button
+        onClick={(e) => {
+          props.handleDeleteOption(props.optionText);
+        }}
+      >
+        remove
+      </button>
     </div>
   );
-}
+};
 
 class AddOption extends React.Component {
   constructor(props) {
     super(props);
-    this.addOption = this.addOption.bind(this);
+    this.handleAddOption = this.handleAddOption.bind(this);
     this.state = {
-      error : undefined
+      error: undefined
     };
   }
-  addOption(e){
+  handleAddOption(e) {
     e.preventDefault();
-    const error = this.props.handleAddOption(e.target.elements.optionToBeAdd.value.trim());
 
-    this.setState(() => {
-      return{ error };
-    });
-    e.target.elements.optionToBeAdd.value = '';
+    const option = e.target.elements.option.value.trim();
+    const error = this.props.handleAddOption(option);
+
+    this.setState(() => ({ error }));
+    if(!error)
+    {
+      e.target.elements.option.value = '';
+    }
   }
   render() {
     return (
       <div>
-       {this.state.error}
-        <form onSubmit={this.addOption}>
-          <input type="text" name="optionToBeAdd" />
+        {this.state.error && <p>{this.state.error}</p>}
+        <form onSubmit={this.handleAddOption}>
+          <input type="text" name="option" />
           <button>Add Option</button>
         </form>
       </div>
     );
   }
 }
+
+// const User = (props) => {
+//   return (
+//     <div>
+//       <p>Name: {props.name}</p>
+//       <p>Age: {props.age}</p>
+//     </div>
+//   );
+// };
 
 ReactDOM.render(<IndecisionApp />, document.getElementById('app'));
