@@ -144,7 +144,7 @@ var Header = function Header(props) {
 };
 
 Header.defaultProps = {
-  title: 'Indecision'
+  title: 'Indecision App'
 };
 
 var Action = function Action(props) {
