@@ -1,33 +1,33 @@
-class TagVisible extends React.Component {
+class VisibilityToggle extends React.Component {
   constructor(props) {
     super(props);
-    this.toggolComment = this.toggolComment.bind(this);
+    this.handleToggleVisibility = this.handleToggleVisibility.bind(this);
     this.state = {
-      visible : true
-    } 
+      visibility: false
+    };
   }
-  
-  toggolComment(){
-    console.log('button clicked')
+  handleToggleVisibility() {
     this.setState((prevState) => {
       return {
-        visible : !prevState.visible
+        visibility: !prevState.visibility
       };
     });
   }
-
   render() {
     return (
       <div>
         <h1>Visibility Toggle</h1>
-        <button onClick={this.toggolComment}>
-        {this.state.visible ? 'hide comments' : 'show comments'}
+        <button onClick={this.handleToggleVisibility}>
+          {this.state.visibility ? 'Hide details' : 'Show details'}
         </button>
-          {this.state.visible && <div>
-          <p>Hey. These are some details you can now see!</p>
-          </div> }
+        {this.state.visibility && (
+          <div>
+            <p>Hey. These are some details you can now see!</p>
+          </div>
+        )}
       </div>
     );
   }
 }
-ReactDOM.render(<TagVisible />, document.getElementById('app'));
+
+ReactDOM.render(<VisibilityToggle />, document.getElementById('app'));

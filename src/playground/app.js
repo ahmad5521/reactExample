@@ -1,4 +1,6 @@
-// stateless functional component
+// Grab the add function from the add.js file in the utils folder
+// Grab React from the react npm module
+// add(2, 4)
 
 class IndecisionApp extends React.Component {
   constructor(props) {
@@ -8,8 +10,29 @@ class IndecisionApp extends React.Component {
     this.handleAddOption = this.handleAddOption.bind(this);
     this.handleDeleteOption = this.handleDeleteOption.bind(this);
     this.state = {
-      options: props.options
+      options: []
     };
+  }
+  componentDidMount() {
+    try {
+      const json = localStorage.getItem('options');
+      const options = JSON.parse(json);
+
+      if (options) {
+        this.setState(() => ({ options }));
+      }
+    } catch (e) {
+      // Do nothing at all
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.options.length !== this.state.options.length) {
+      const json = JSON.stringify(this.state.options);
+      localStorage.setItem('options', json);
+    }
+  }
+  componentWillUnmount() {
+    console.log('componentWillUnmount');
   }
   handleDeleteOptions() {
     this.setState(() => ({ options: [] }));
@@ -35,30 +58,6 @@ class IndecisionApp extends React.Component {
       options: prevState.options.concat(option)
     }));
   }
-
-
-  componentDidUpdate(prvProps, prvState){
-    if(this.state.options.length !== prvState.options.length){
-      const Json = JSON.stringify(this.state.options);
-      localStorage.setItem('options', Json);
-      console.log('component Did Update');
-    }
-  }
-  componentWillMount(){
-    try {
-      const Json = JSON.parse(localStorage.getItem('options'));
-      if(Json)
-      {
-        this.setState((prevState) => ({
-          options: Json
-        }));
-        console.log('component will Mount');
-      }    
-    } catch (error) {
-      // nothing
-    }
-  }
-
   render() {
     const subtitle = 'Put your life in the hands of a computer';
 
@@ -82,10 +81,6 @@ class IndecisionApp extends React.Component {
   }
 }
 
-IndecisionApp.defaultProps = {
-  options: []
-};
-
 const Header = (props) => {
   return (
     <div>
@@ -96,7 +91,7 @@ const Header = (props) => {
 };
 
 Header.defaultProps = {
-  title: 'Indecision App'
+  title: 'Indecision'
 };
 
 const Action = (props) => {
@@ -116,7 +111,7 @@ const Options = (props) => {
   return (
     <div>
       <button onClick={props.handleDeleteOptions}>Remove All</button>
-      {props.options.length === 0 && <p>Add Option to Start</p> }
+      {props.options.length === 0 && <p>Please add an option to get started!</p>}
       {
         props.options.map((option) => (
           <Option
@@ -160,8 +155,8 @@ class AddOption extends React.Component {
     const error = this.props.handleAddOption(option);
 
     this.setState(() => ({ error }));
-    if(!error)
-    {
+
+    if (!error) {
       e.target.elements.option.value = '';
     }
   }
@@ -177,5 +172,14 @@ class AddOption extends React.Component {
     );
   }
 }
+
+// const User = (props) => {
+//   return (
+//     <div>
+//       <p>Name: {props.name}</p>
+//       <p>Age: {props.age}</p>
+//     </div>
+//   );
+// };
 
 ReactDOM.render(<IndecisionApp />, document.getElementById('app'));
