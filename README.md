@@ -2,5 +2,5 @@
 reactExample
 
 
-- (yarn OR npm) run dev-server
-- (yarn OR npm) run serve
+- yarn/npm run dev-server
+- yarn/npm run serve
